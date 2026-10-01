@@ -1,0 +1,10 @@
+node_modules/
+
+# Local SQLite database and its sidecar files — re-created by `npm run deploy:sqlite`
+db/po.db
+db/po.db-shm
+db/po.db-wal
+
+gen/
+*.log
+.DS_Store

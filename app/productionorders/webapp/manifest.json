@@ -1,0 +1,211 @@
+{
+  "_version": "1.59.0",
+  "sap.app": {
+    "id": "po.orders",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "title": "Production Orders",
+    "description": "Production Order management (mock demo)",
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/service/po/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "productionorders-manage": {
+          "semanticObject": "ProductionOrder",
+          "action": "manage",
+          "title": "Production Orders",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "fullWidth": true,
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.fe.templates": {}
+      }
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "po.orders.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "routing": {
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "ProductionOrdersList",
+          "target": "ProductionOrdersList"
+        },
+        {
+          "pattern": "ProductionOrders({key}):?query:",
+          "name": "ProductionOrdersObjectPage",
+          "target": "ProductionOrdersObjectPage"
+        }
+      ],
+      "targets": {
+        "ProductionOrdersList": {
+          "type": "Component",
+          "id": "ProductionOrdersList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/ProductionOrders",
+              "variantManagement": "Page",
+              "initialLoad": "Enabled",
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable",
+                    "growingThreshold": 25,
+                    "selectionMode": "Single",
+                    "creationMode": {
+                      "name": "NewPage"
+                    }
+                  },
+                  "columns": {
+                    "DataField::ManufacturingOrder": {
+                      "width": "12%"
+                    },
+                    "DataField::Material": {
+                      "width": "26%"
+                    },
+                    "DataField::ProductionPlant": {
+                      "width": "10%"
+                    },
+                    "DataField::TotalQuantity": {
+                      "width": "18%"
+                    },
+                    "DataField::MfgOrderPlannedEndDate": {
+                      "width": "16%"
+                    },
+                    "DataField::ProductionOrderStatus": {
+                      "width": "18%"
+                    }
+                  }
+                }
+              },
+              "navigation": {
+                "ProductionOrders": {
+                  "detail": {
+                    "route": "ProductionOrdersObjectPage"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "ProductionOrdersObjectPage": {
+          "type": "Component",
+          "id": "ProductionOrdersObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "contextPath": "/ProductionOrders",
+              "editableHeaderContent": false,
+              "controlConfiguration": {
+                "to_Operations/@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable"
+                  },
+                  "columns": {
+                    "DataField::ManufacturingOrderOperation": {
+                      "width": "12%"
+                    },
+                    "DataField::OperationText": {
+                      "width": "34%"
+                    },
+                    "DataField::WorkCenter": {
+                      "width": "18%"
+                    },
+                    "DataField::OperationConfirmedYieldQuantity": {
+                      "width": "20%"
+                    },
+                    "DataField::OperationStatus": {
+                      "width": "16%"
+                    }
+                  }
+                },
+                "to_Components/@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable"
+                  },
+                  "columns": {
+                    "DataField::ReservationItem": {
+                      "width": "10%"
+                    },
+                    "DataField::Material": {
+                      "width": "34%"
+                    },
+                    "DataField::RequiredQuantity": {
+                      "width": "20%"
+                    },
+                    "DataField::WithdrawnQuantity": {
+                      "width": "20%"
+                    },
+                    "DataField::ProductionPlant": {
+                      "width": "16%"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.fe.templates.ListReport.ListReportController": {
+            "controllerName": "po.orders.ext.ListReportExt"
+          },
+          "sap.fe.templates.ObjectPage.ObjectPageController": {
+            "controllerName": "po.orders.ext.ObjectPageExt"
+          }
+        }
+      }
+    }
+  }
+}

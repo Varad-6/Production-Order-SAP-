@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Production Orders</title>
+
+  <!-- ==========================================================================
+       Fiori Elements app (List Report + Object Page), Horizon Morning.
+
+       A thin app header sits above the Fiori Elements component so the signed-in
+       persona and a "Switch User" action are always visible. The persona arrives
+       as URL parameters from the MOCK login screen and is cosmetic: it only
+       decides which buttons render. The CAP service is NOT role-gated.
+       ========================================================================== -->
+
+  <script id="sap-ui-bootstrap"
+    src="https://ui5.sap.com/resources/sap-ui-core.js"
+    data-sap-ui-theme="sap_horizon"
+    data-sap-ui-libs="sap.m,sap.ui.core,sap.fe.templates"
+    data-sap-ui-compat-version="edge"
+    data-sap-ui-async="true"
+    data-sap-ui-frame-options="allow"
+    data-sap-ui-resource-roots='{"po.orders": "./"}'>
+  </script>
+
+  <script>
+    sap.ui.getCore().attachInit(function () {
+      sap.ui.require([
+        "sap/ui/core/Component",
+        "sap/ui/core/ComponentContainer",
+        "sap/m/Bar", "sap/m/Title", "sap/m/Text", "sap/m/Button",
+        "sap/m/Avatar", "sap/m/VBox", "sap/m/HBox", "sap/m/FlexItemData"
+      ], function (Component, ComponentContainer, Bar, Title, Text, Button, Avatar, VBox, HBox, FlexItemData) {
+
+        var oParams = new URLSearchParams(window.location.search);
+        var sUser = oParams.get("user") || "Meera Nair";
+        var sRoleLabel = oParams.get("roleLabel") || "Supervisor";
+
+        var sInitials = sUser.split(" ").map(function (p) { return p.charAt(0); })
+          .join("").slice(0, 2).toUpperCase();
+
+        // App header — always shows who is signed in and their role.
+        var oHeader = new Bar({
+          contentLeft: [
+            new Title({ text: "Production Orders", level: "H2" })
+          ],
+          contentRight: [
+            new Avatar({ initials: sInitials, displaySize: "XS" }),
+            new Text({ text: sUser + " · " + sRoleLabel })
+              .addStyleClass("sapUiSmallMarginEnd"),
+            new Button({
+              text: "Switch User",
+              icon: "sap-icon://user-settings",
+              // Returns to the mock login so all three roles can be demoed
+              // back to back — no incognito windows needed.
+              press: function () {
+                window.location.href = "../../login/webapp/index.html";
+              }
+            })
+          ]
+        });
+
+        oHeader.placeAt("content");
+
+        Component.create({ name: "po.orders" }).then(function (oComponent) {
+          // Placed directly rather than nested in a flex container — wrapping
+          // the Fiori Elements component stops it templating its pages.
+          new ComponentContainer({
+            component: oComponent,
+            height: "calc(100vh - 3rem)",
+            width: "100%"
+          }).placeAt("content");
+        });
+      });
+    });
+  </script>
+</head>
+
+<body class="sapUiBody sapUiSizeCompact" id="content"></body>
+</html>

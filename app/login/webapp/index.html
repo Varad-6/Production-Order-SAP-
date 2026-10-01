@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Production Orders — Sign In</title>
+
+  <!-- ==========================================================================
+       MOCK LOGIN — NOT REAL AUTHENTICATION.
+       There is no password, no token, no backend check. Picking a persona only
+       decides which buttons the Fiori Elements app renders. The CAP service is
+       deliberately NOT role-gated: a raw HTTP call succeeds in any role.
+       This is a demo prop. Do not mistake it for security.
+       ========================================================================== -->
+
+  <script id="sap-ui-bootstrap"
+    src="https://ui5.sap.com/resources/sap-ui-core.js"
+    data-sap-ui-theme="sap_horizon"
+    data-sap-ui-libs="sap.m,sap.f"
+    data-sap-ui-compat-version="edge"
+    data-sap-ui-async="true"
+    data-sap-ui-resource-roots='{"po.login": "./"}'>
+  </script>
+
+  <script>
+    sap.ui.getCore().attachInit(function () {
+      sap.ui.require(["sap/ui/core/mvc/XMLView"], function (XMLView) {
+        XMLView.create({ viewName: "po.login.view.Login" })
+          .then(function (view) { view.placeAt("content"); });
+      });
+    });
+  </script>
+</head>
+
+<body class="sapUiBody sapUiSizeCompact" id="content"></body>
+</html>

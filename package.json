@@ -1,0 +1,26 @@
+{
+  "name": "prod_order",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@sap/cds": "^10"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^3"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "deploy:sqlite": "cds deploy --to sqlite:db/po.db"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "url": "db/po.db"
+        }
+      }
+    }
+  },
+  "private": true
+}

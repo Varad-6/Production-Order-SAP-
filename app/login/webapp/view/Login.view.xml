@@ -1,0 +1,52 @@
+<mvc:View
+  controllerName="po.login.controller.Login"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:f="sap.f"
+  xmlns:card="sap.f.cards"
+  displayBlock="true">
+
+  <!-- MOCK login screen. Three personas, no password. See index.html. -->
+  <App>
+    <Page showHeader="false" class="sapUiContentPadding">
+
+      <VBox alignItems="Center" class="sapUiMediumMarginTop">
+
+        <Title text="Production Orders" level="H1"/>
+        <Text text="Select a user to sign in" class="sapUiTinyMarginTop"/>
+
+        <MessageStrip
+          text="Demo mock — no password is checked and the service is not role-gated. The selected role changes which buttons appear, nothing more."
+          type="Information"
+          showIcon="true"
+          class="sapUiMediumMarginTop sapUiMediumMarginBottom"/>
+
+        <!-- One card per persona, bound to the client-side JSONModel. -->
+        <HBox wrap="Wrap" justifyContent="Center" items="{personas>/personas}">
+          <f:Card width="20rem" class="sapUiSmallMargin">
+            <f:header>
+              <card:Header
+                title="{personas>name}"
+                subtitle="{personas>roleLabel}"
+                iconSrc="{personas>icon}"/>
+            </f:header>
+            <f:content>
+              <VBox class="sapUiSmallMargin">
+                <Text text="{personas>description}" height="3rem"/>
+                <Text text="Can: {personas>can}" class="sapUiSmallMarginTop"/>
+                <Button
+                  text="Log in as {personas>firstName}"
+                  type="Emphasized"
+                  width="100%"
+                  press=".onLogin"
+                  class="sapUiMediumMarginTop"/>
+              </VBox>
+            </f:content>
+          </f:Card>
+        </HBox>
+
+      </VBox>
+
+    </Page>
+  </App>
+</mvc:View>
